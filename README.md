@@ -17,6 +17,8 @@ Bu proje, sahadaki elektronik kartlardan alınan basınç verilerini merkezi bir
  ### Cihaz Tarafı (Client)
 - Basınç sensörlerinden aldığı veriye göre karar verir.
 
+- Cihaz belirli periyotlarla basınç verisini gönderir.
+
 - Basınç düşerse sunucuya false, normale dönerse true değeri gönderir.
 
 - REST API üzerinden HTTP POST isteği ile veri iletir.
