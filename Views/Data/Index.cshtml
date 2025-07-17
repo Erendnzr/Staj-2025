@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Veri Analiz Sayfası";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div id="dataTableContainer"></div>
+<canvas id="dataChart" width="800" height="400"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        async function fetchData() {
+            const response = await fetch('/Data/GetData?type=last10');
+            const data = await response.json();
+            renderTable(data);
+            renderChart(data);
+        }
+
+        function renderTable(data) {
+            let html = '<table class="table"><thead><tr><th>Zaman</th><th>Değer</th></tr></thead><tbody>';
+            data.forEach(d => {
+                const date = new Date(d.timestamp);
+                html += `<tr><td>${date.toLocaleTimeString()}</td><td>${d.value}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('dataTableContainer').innerHTML = html;
+        }
+
+        let chart;
+        function renderChart(data) {
+            const ctx = document.getElementById('dataChart').getContext('2d');
+            const labels = data.map(d => new Date(d.timestamp).toLocaleTimeString());
+            const values = data.map(d => d.value);
+
+            if (chart) chart.destroy();
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Basınç Değeri',
+                        data: values,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: false }
+                    }
+                }
+            });
+        }
+
+        fetchData();
+    </script>
+}
+

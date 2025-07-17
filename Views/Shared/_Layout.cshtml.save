@@ -1,0 +1,20 @@
+@if (User.Identity.IsAuthenticated)
+{
+    <li class="nav-item">
+        <a class="nav-link" href="/Data/Index">Veri Analiz</a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="/Account/Logout" class="d-inline">
+            <button type="submit" class="btn btn-link nav-link" style="cursor:pointer;">Çıkış</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link" href="/Account/Login">Login</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Register</a>
+    </li>
+}

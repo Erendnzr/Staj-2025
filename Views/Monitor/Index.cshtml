@@ -1,0 +1,119 @@
+@{
+    ViewData["Title"] = "Veri Analiz Sayfası";
+}
+
+<h2>Veri Analiz Sayfası</h2>
+
+<div class="btn-group mb-3" role="group" aria-label="Veri filtreleri">
+    <button type="button" class="btn btn-primary active" data-type="last10">Son 10 Veri</button>
+    <button type="button" class="btn btn-outline-primary" data-type="last10minutes">Son 10 Dakika</button>
+    <button type="button" class="btn btn-outline-primary" data-type="last1hour">Son 1 Saat</button>
+</div>
+
+<div id="dataTableContainer"></div>
+
+<canvas id="dataChart" width="800" height="400"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const buttons = document.querySelectorAll(".btn-group button");
+        let currentType = "last10";
+
+        buttons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                if (btn.dataset.type === currentType) return;
+                currentType = btn.dataset.type;
+
+                buttons.forEach(b => {
+                    b.classList.toggle("active", b === btn);
+                    b.classList.toggle("btn-primary", b === btn);
+                    b.classList.toggle("btn-outline-primary", b !== btn);
+                });
+
+                fetchDataAndRender(currentType);
+            });
+        });
+
+        async function fetchDataAndRender(type) {
+            const response = await fetch(`/Data/GetData?type=${type}`);
+            const data = await response.json();
+
+            renderTable(data);
+            renderChart(data);
+        }
+
+        function renderTable(data) {
+            let html = `<table class="table table-striped">
+                            <thead>
+                                <tr><th>Zaman</th><th>Değer</th></tr>
+                            </thead>
+                            <tbody>`;
+
+            data.forEach(d => {
+                const date = new Date(d.timestamp);
+                html += `<tr><td>${date.toLocaleTimeString()}</td><td>${d.value}</td></tr>`;
+            });
+
+            html += "</tbody></table>";
+
+            document.getElementById("dataTableContainer").innerHTML = html;
+        }
+
+        let chart = null;
+
+        function renderChart(data) {
+            const ctx = document.getElementById('dataChart').getContext('2d');
+
+            const labels = data.map(d => {
+                const date = new Date(d.timestamp);
+                return date.toLocaleTimeString();
+            });
+
+            const values = data.map(d => d.value);
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Basınç Değeri',
+                        data: values,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Zaman'
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Değer'
+                            },
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        }
+
+        
+        fetchDataAndRender(currentType);
+    </script>
+}
+

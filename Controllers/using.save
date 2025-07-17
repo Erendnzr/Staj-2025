@@ -1,0 +1,68 @@
+using BasincIzlemeProjesi.Models;
+using BasincIzlemeProjesi.Data;
+using System.Security.Cryptography;
+using System.Text;
+using System.Linq;
+
+namespace BasincIzlemeProjesi.Controllers
+{
+    public class AccountController : Controller
+    {
+        private readonly AppDbContext _context;
+
+        public AccountController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(string username, string password)
+        {
+            if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                ViewBag.Error = "Kullanıcı adı ve şifre gerekli.";
+                return View();
+            }
+
+            string hashedPassword = CalculateMD5Hash(password);
+
+            var user = _context.Users
+                .FirstOrDefault(u => u.Username == username && u.Password == hashedPassword);
+
+            if(user != null)
+            {
+                // Giriş başarılı - buraya kullanıcı oturumu veya yönlendirme ekleyebilirsin
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.Error = "Kullanıcı adı veya şifre yanlış.";
+                return View();
+            }
+        }
+
+        private string CalculateMD5Hash(string input)
+        {
+            using(MD5 md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                // Byte dizisini hex string’e çevir
+                StringBuilder sb = new StringBuilder();
+                foreach(var b in hashBytes)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+                return sb.ToString();
+            }
+        }
+    }
+}
+
