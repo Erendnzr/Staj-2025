@@ -40,3 +40,4 @@
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/BasincIzlemeProjesi.pdb
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/BasincIzlemeProjesi.genruntimeconfig.cache
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/ref/BasincIzlemeProjesi.dll
+/home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/BasincIzlemeProjesi.sourcelink.json

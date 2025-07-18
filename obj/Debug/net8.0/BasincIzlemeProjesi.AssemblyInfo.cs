@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BasincIzlemeProjesi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bb42db63f71069da5639e0ac815e4e9c0242dc43")]
 [assembly: System.Reflection.AssemblyProductAttribute("BasincIzlemeProjesi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BasincIzlemeProjesi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
