@@ -1,0 +1,113 @@
+@model List<BasincIzlemeProjesi.Models.Veri>
+
+@{
+    Layout = "_Layout";
+    var tip = ViewBag.Tip as string ?? "son10";
+    var sayfa = (int)ViewBag.Sayfa;
+    var toplamSayfa = (int)ViewBag.ToplamSayfa;
+    var sayfalamaVar = (bool)ViewBag.SayfalamaVar;
+}
+
+<h2>Veri İzleme Paneli</h2>
+
+<div>
+    <a href="@Url.Action("Index", "Monitor", new { tip = "son10" })" class="btn btn-primary @(tip == "son10" ? "active" : "")">Son 10 Veri</a>
+    <a href="@Url.Action("Index", "Monitor", new { tip = "son10dakika" })" class="btn btn-primary @(tip == "son10dakika" ? "active" : "")">Son 10 Dakika</a>
+    <a href="@Url.Action("Index", "Monitor", new { tip = "son1saat" })" class="btn btn-primary @(tip == "son1saat" ? "active" : "")">Son 1 Saat</a>
+    <a href="@Url.Action("Index", "Monitor", new { tip = "tumveriler" })" class="btn btn-primary @(tip == "tumveriler" ? "active" : "")">Tüm Veriler</a>
+</div>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cihaz ID</th>
+            <th>Değer</th>
+            <th>Zaman</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var v in Model)
+        {
+            <tr>
+                <td>@v.Id</td>
+                <td>@v.CihazId</td>
+                <td>@v.Deger</td>
+                <td>@v.Zaman.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (sayfalamaVar)
+{
+    <nav>
+        <ul class="pagination">
+            <li class="page-item @(sayfa == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { tip = tip, sayfa = sayfa - 1 })">Önceki</a>
+            </li>
+            @for (int i = 1; i <= toplamSayfa; i++)
+            {
+                <li class="page-item @(i == sayfa ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { tip = tip, sayfa = i })">@i</a>
+                </li>
+            }
+            <li class="page-item @(sayfa == toplamSayfa ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { tip = tip, sayfa = sayfa + 1 })">Sonraki</a>
+            </li>
+        </ul>
+    </nav>
+}
+
+<h3>Basınç Grafiği</h3>
+<div class="card">
+    <div class="card-body">
+        <canvas id="veriGrafik" width="900" height="400"></canvas>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('veriGrafik').getContext('2d');
+
+            const labels = @Html.Raw(ViewBag.GrafikZamanJson);
+            const data = @Html.Raw(ViewBag.GrafikDegerJson);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Basınç Değeri',
+                        data: data,
+                        borderColor: 'blue',
+                        backgroundColor: 'rgba(0,0,255,0.1)',
+                        fill: true,
+                        tension: 0.2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Değer'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Zaman (HH:mm:ss)'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}
+

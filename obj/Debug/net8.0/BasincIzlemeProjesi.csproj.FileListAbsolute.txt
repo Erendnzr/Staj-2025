@@ -6,6 +6,7 @@
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/BasincIzlemeProjesi.MvcApplicationPartsAssemblyInfo.cache
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/BasincIzlemeProjesi.RazorAssemblyInfo.cache
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/BasincIzlemeProjesi.RazorAssemblyInfo.cs
+/home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/BasincIzlemeProjesi.sourcelink.json
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/appsettings.Development.json
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/appsettings.json
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/BasincIzlemeProjesi.staticwebassets.runtime.json
@@ -15,6 +16,8 @@
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/BasincIzlemeProjesi.dll
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/BasincIzlemeProjesi.pdb
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Humanizer.dll
+/home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Microsoft.AspNetCore.JsonPatch.dll
+/home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Design.dll
@@ -22,8 +25,11 @@
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Microsoft.Extensions.DependencyModel.dll
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Mono.TextTemplating.dll
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/MySqlConnector.dll
+/home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/Pomelo.EntityFrameworkCore.MySql.dll
 /home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/System.CodeDom.dll
+/home/arda/BasincIzlemeProjesi/bin/Debug/net8.0/X.PagedList.dll
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/staticwebassets.build.json
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/staticwebassets.development.json
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/staticwebassets/msbuild.BasincIzlemeProjesi.Microsoft.AspNetCore.StaticWebAssets.props
@@ -40,4 +46,3 @@
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/BasincIzlemeProjesi.pdb
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/BasincIzlemeProjesi.genruntimeconfig.cache
 /home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/ref/BasincIzlemeProjesi.dll
-/home/arda/BasincIzlemeProjesi/obj/Debug/net8.0/BasincIzlemeProjesi.sourcelink.json

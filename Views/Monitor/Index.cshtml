@@ -1,119 +1,132 @@
+@model List<BasincIzlemeProjesi.Models.Veri>
+
 @{
-    ViewData["Title"] = "Veri Analiz Sayfası";
+    ViewData["Title"] = "Veri İzleme";
+    var tip = ViewBag.Tip as string ?? "son10";
+    var sayfa = (int)(ViewBag.Sayfa ?? 1);
+    var toplamSayfa = (int)(ViewBag.ToplamSayfa ?? 1);
+    var sayfalamaVar = (bool)(ViewBag.SayfalamaVar ?? false);
+    var baslangic = ViewBag.Baslangic as string ?? "";
+    var bitis = ViewBag.Bitis as string ?? "";
+    var grafikZamanJson = ViewBag.GrafikZamanJson ?? "null";
+    var grafikDegerJson = ViewBag.GrafikDegerJson ?? "null";
 }
 
-<h2>Veri Analiz Sayfası</h2>
+<h2>Veri İzleme</h2>
 
-<div class="btn-group mb-3" role="group" aria-label="Veri filtreleri">
-    <button type="button" class="btn btn-primary active" data-type="last10">Son 10 Veri</button>
-    <button type="button" class="btn btn-outline-primary" data-type="last10minutes">Son 10 Dakika</button>
-    <button type="button" class="btn btn-outline-primary" data-type="last1hour">Son 1 Saat</button>
+<div>
+    <button onclick="degistirTip('son10')">Son 10 Veri</button>
+    <button onclick="degistirTip('son10dakika')">Son 10 Dakika</button>
+    <button onclick="degistirTip('son1saat')">Son 1 Saat</button>
+    <button onclick="degistirTip('tumveriler')">Tüm Veriler</button>
 </div>
 
-<div id="dataTableContainer"></div>
+@if(tip == "tumveriler")
+{
+    <form method="get" id="tarihForm">
+        <input type="hidden" name="tip" value="tumveriler" />
+        <label>Başlangıç: <input type="datetime-local" name="baslangic" value="@baslangic" /></label>
+        <label>Bitiş: <input type="datetime-local" name="bitis" value="@bitis" /></label>
+        <button type="submit">Filtrele</button>
+    </form>
+}
 
-<canvas id="dataChart" width="800" height="400"></canvas>
+@if(Model != null && Model.Count > 0)
+{
+    <h3>@(tip == "son10" ? "Son 10 Veri" :
+         tip == "son10dakika" ? "Son 10 Dakika" :
+         tip == "son1saat" ? "Son 1 Saat" :
+         "Tüm Veriler") 
+    </h3>
+
+    <table border="1" cellpadding="5" cellspacing="0" style="width:100%; margin-bottom:20px;">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CihazId</th>
+                <th>Deger</th>
+                <th>Zaman</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var veri in Model)
+            {
+                <tr>
+                    <td>@veri.Id</td>
+                    <td>@veri.CihazId</td>
+                    <td>@veri.Deger</td>
+                    <td>@veri.Zaman.ToLocalTime().ToString("yyyy-MM-ddTHH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Gösterilecek veri yok.</p>
+}
+
+@if(tip == "tumveriler" && sayfalamaVar)
+{
+    <div>
+        <a href="@Url.Action("Index", new { tip = tip, sayfa = sayfa > 1 ? sayfa - 1 : 1, baslangic = baslangic, bitis = bitis })" 
+           style="margin-right:10px;">Önceki</a>
+        <a href="@Url.Action("Index", new { tip = tip, sayfa = sayfa < toplamSayfa ? sayfa + 1 : toplamSayfa, baslangic = baslangic, bitis = bitis })">Sonraki</a>
+    </div>
+}
+
+<h3>Grafik - @(tip == "son10" ? "Son 10 Veri" :
+         tip == "son10dakika" ? "Son 10 Dakika" :
+         tip == "son1saat" ? "Son 1 Saat" :
+         "Tüm Veriler")</h3>
+<canvas id="veriGrafik" width="800" height="300"></canvas>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const buttons = document.querySelectorAll(".btn-group button");
-        let currentType = "last10";
+        const ctx = document.getElementById('veriGrafik').getContext('2d');
+        const zamanlar = @Html.Raw(grafikZamanJson);
+        const degerler = @Html.Raw(grafikDegerJson);
 
-        buttons.forEach(btn => {
-            btn.addEventListener("click", () => {
-                if (btn.dataset.type === currentType) return;
-                currentType = btn.dataset.type;
-
-                buttons.forEach(b => {
-                    b.classList.toggle("active", b === btn);
-                    b.classList.toggle("btn-primary", b === btn);
-                    b.classList.toggle("btn-outline-primary", b !== btn);
-                });
-
-                fetchDataAndRender(currentType);
-            });
-        });
-
-        async function fetchDataAndRender(type) {
-            const response = await fetch(`/Data/GetData?type=${type}`);
-            const data = await response.json();
-
-            renderTable(data);
-            renderChart(data);
-        }
-
-        function renderTable(data) {
-            let html = `<table class="table table-striped">
-                            <thead>
-                                <tr><th>Zaman</th><th>Değer</th></tr>
-                            </thead>
-                            <tbody>`;
-
-            data.forEach(d => {
-                const date = new Date(d.timestamp);
-                html += `<tr><td>${date.toLocaleTimeString()}</td><td>${d.value}</td></tr>`;
-            });
-
-            html += "</tbody></table>";
-
-            document.getElementById("dataTableContainer").innerHTML = html;
-        }
-
-        let chart = null;
-
-        function renderChart(data) {
-            const ctx = document.getElementById('dataChart').getContext('2d');
-
-            const labels = data.map(d => {
-                const date = new Date(d.timestamp);
-                return date.toLocaleTimeString();
-            });
-
-            const values = data.map(d => d.value);
-
-            if (chart) {
-                chart.destroy();
-            }
-
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Basınç Değeri',
-                        data: values,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        fill: true,
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: {
-                            display: true,
-                            title: {
-                                display: true,
-                                text: 'Zaman'
-                            }
-                        },
-                        y: {
-                            display: true,
-                            title: {
-                                display: true,
-                                text: 'Değer'
-                            },
-                            beginAtZero: false
-                        }
+        const veriGrafik = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: zamanlar,
+                datasets: [{
+                    label: 'Deger',
+                    data: degerler,
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0,0,255,0.2)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        display: true,
+                        title: { display: true, text: 'Zaman' }
+                    },
+                    y: {
+                        display: true,
+                        title: { display: true, text: 'Deger' },
+                        beginAtZero: true
                     }
                 }
-            });
-        }
+            }
+        });
 
-        
-        fetchDataAndRender(currentType);
+        function degistirTip(yeniTip) {
+            let url = new URL(window.location.href);
+            url.searchParams.set('tip', yeniTip);
+            url.searchParams.delete('sayfa'); // sayfa sıfırlansın
+            if (yeniTip !== 'tumveriler') {
+                url.searchParams.delete('baslangic');
+                url.searchParams.delete('bitis');
+            }
+            window.location.href = url.toString();
+        }
     </script>
 }
 
