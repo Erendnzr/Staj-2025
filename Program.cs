@@ -7,6 +7,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 var apiKey = builder.Configuration.GetValue<string>("ApiKey");
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5500") 
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson()
     .ConfigureApiBehaviorOptions(options =>
@@ -30,11 +43,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); 
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors(MyAllowSpecificOrigins);
 
 app.Use(async (context, next) =>
 {

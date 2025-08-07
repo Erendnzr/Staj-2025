@@ -12,13 +12,26 @@
     var grafikDegerJson = ViewBag.GrafikDegerJson ?? "null";
 }
 
+<style>
+    button.active {
+        background-color: #14c71c;
+        color: white;
+    }
+
+    a.disabled {
+        pointer-events: none;
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+
 <h2>Veri İzleme</h2>
 
 <div>
-    <button onclick="degistirTip('son10')">Son 10 Veri</button>
-    <button onclick="degistirTip('son10dakika')">Son 10 Dakika</button>
-    <button onclick="degistirTip('son1saat')">Son 1 Saat</button>
-    <button onclick="degistirTip('tumveriler')">Tüm Veriler</button>
+    <button class="@(tip == "son10" ? "active" : "")" onclick="degistirTip('son10')">Son 10 Veri</button>
+    <button class="@(tip == "son10dakika" ? "active" : "")" onclick="degistirTip('son10dakika')">Son 10 Dakika</button>
+    <button class="@(tip == "son1saat" ? "active" : "")" onclick="degistirTip('son1saat')">Son 1 Saat</button>
+    <button class="@(tip == "tumveriler" ? "active" : "")" onclick="degistirTip('tumveriler')">Tüm Veriler</button>
 </div>
 
 @if(tip == "tumveriler")
@@ -70,8 +83,10 @@ else
 {
     <div>
         <a href="@Url.Action("Index", new { tip = tip, sayfa = sayfa > 1 ? sayfa - 1 : 1, baslangic = baslangic, bitis = bitis })" 
+           class="@(sayfa == 1 ? "disabled" : "")"
            style="margin-right:10px;">Önceki</a>
-        <a href="@Url.Action("Index", new { tip = tip, sayfa = sayfa < toplamSayfa ? sayfa + 1 : toplamSayfa, baslangic = baslangic, bitis = bitis })">Sonraki</a>
+        <a href="@Url.Action("Index", new { tip = tip, sayfa = sayfa < toplamSayfa ? sayfa + 1 : toplamSayfa, baslangic = baslangic, bitis = bitis })"
+           class="@(sayfa == toplamSayfa ? "disabled" : "")">Sonraki</a>
     </div>
 }
 

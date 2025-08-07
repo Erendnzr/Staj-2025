@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using BasincIzlemeProjesi.Data;
 using BasincIzlemeProjesi.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 
 namespace BasincIzlemeProjesi.Controllers
 {
+   
     public class MonitorController : Controller
     {
         private readonly GirisSistemiContext _context;
@@ -39,17 +41,13 @@ namespace BasincIzlemeProjesi.Controllers
 
                 sayfalamaVar = true;
 
-                // Toplam kayıt sayısı
                 int toplamKayit = await Task.Run(() => sorgu.Count());
 
-                // Sayfa sayısını hesapla
                 int toplamSayfa = (int)Math.Ceiling((double)toplamKayit / SayfaBoyutu);
 
-                // Geçerli sayfa sınırlarını kontrol et
                 if (sayfa < 1) sayfa = 1;
                 if (sayfa > toplamSayfa) sayfa = toplamSayfa;
 
-                // Sayfa bazında verileri getir
                 veriler = await Task.Run(() => sorgu.Skip((sayfa - 1) * SayfaBoyutu).Take(SayfaBoyutu).ToList());
 
                 ViewBag.ToplamSayfa = toplamSayfa;

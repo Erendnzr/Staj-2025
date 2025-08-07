@@ -12,10 +12,9 @@ Yerel ağda çalışır, kullanıcı doğrulaması yapar ve verileri güvenli ş
 ## 🧰 Gereksinimler
 
 - .NET SDK 8.0.412 
-- MySQL veya MariaDB veritabanı 
+- MySQL 8.0 veya üzeri veritabanı  (https://dev.mysql.com/downloads/mysql/)
 - Kod editörü (VS Code, Rider, nano, vim vb.) 
 - Terminal veya komut satırı erişimi 
-- İsteğe bağlı: Visual Studio (IDE tercihi)
 
 ---
 
