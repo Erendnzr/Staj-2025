@@ -1,8 +1,8 @@
-CREATE TABLE IF NOT EXISTS kullanicilar (
+CREATE TABLE kullanicilar (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    kullanici_adi VARCHAR(50) NOT NULL,
-    sifre VARCHAR(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    kullanici_adi VARCHAR(50) NOT NULL UNIQUE,
+    sifre CHAR(32) NOT NULL
+);
 
 INSERT INTO kullanicilar (kullanici_adi, sifre) VALUES
 ('admin', MD5('12345'),
