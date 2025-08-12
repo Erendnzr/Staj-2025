@@ -11,7 +11,7 @@ Yerel ağda çalışır, kullanıcı doğrulaması yapar ve verileri güvenli ş
 
 ## 🧰 Gereksinimler
 
-- .NET SDK 8.0.412 
+- .NET SDK 8.0.412 (https://dotnet.microsoft.com/en-us/download/dotnet)
 - MySQL 8.0 veya üzeri veritabanı  (https://dev.mysql.com/downloads/mysql/)
 - Kod editörü (VS Code, Rider, nano, vim vb.) 
 - Terminal veya komut satırı erişimi 
@@ -36,14 +36,16 @@ cd BasincIzlemeProjesi
 ```bash
 dotnet ef database update
 ```
-
-4. **Projeyi çalıştır:**
+4. **sql dosyalarındaki tabloları ve tablo satırlarını girin**
+   kullanicilar.sql , veriler.sql , cihazlar.sql
+   
+5. **Projeyi çalıştır:**
 
 ```bash
 dotnet run
 ```
 
-Varsayılan olarak `http://192.168.10.93:5048` adresinden erişilebilir.
+Varsayılan olarak `localhost:5048` adresinden erişilebilir.
 
 ---
 
@@ -152,7 +154,7 @@ curl -X POST http://localhost:5048/api/veriler/veri-ekle      -H "Content-Type: 
 | 401 Unauthorized          | API Key yanlış veya eksik            | `x-api-key` header'ını kontrol et          |
 | 400 Bad Request           | Veri eksik veya hatalı               | Gönderilen JSON yapısını kontrol et        |
 | 404 Not Found             | Endpoint yanlış veya yok             | URL'yi doğru yazdığından emin ol           |
-
+|MySQL Tabloları Eksik ya da Hatalı Yüklenmesi| Migrations dosyaları hatalı olabilir | Dosyaları silin ve (dotnet ef migrations add InitialCreate) kodunu girin girdikten sonra (dotnet ef database update) kodunu tekrar deneyin |
 
 ---
 
