@@ -5,5 +5,5 @@ CREATE TABLE kullanicilar (
 );
 
 INSERT INTO kullanicilar (kullanici_adi, sifre) VALUES
-('admin', MD5('12345'),
+('admin', MD5('12345')),
 ('kullanıcı', MD5('123'));

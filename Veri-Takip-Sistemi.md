@@ -139,11 +139,11 @@ Yeni veri eklemek için kullanılır.
 #### Örnek cURL:
 
 ```bash
-curl -X POST http://localhost:5048/api/veriler/veri-ekle      -H "Content-Type: application/json"      -H "x-api-key: ApiKey123"      -d '{
-           "CihazId": "cihaz1",
-           "Deger": 100,
-           "Zaman": "2025-07-24T10:55:00"
-         }'
+curl -X POST "http://localhost:5048/api/veriler/veri-ekle" ^
+-H "Content-Type: application/json" ^
+-H "x-api-key: ApiKey123" ^
+-d "{\"CihazId\":\"cihaz1\",\"Deger\":100,\"Zaman\":\"2025-07-24T10:55:00\"}"
+
 ```
 
 ---
