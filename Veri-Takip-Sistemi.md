@@ -36,7 +36,7 @@ cd BasincIzlemeProjesi
 ```bash
 dotnet ef database update
 ```
-4. **sql dosyalarındaki tabloları ve tablo satırlarını girin:**
+4. **Veritabanına sql dosyalarındaki tabloları ve tablo satırlarını girin:**
    
    kullanicilar.sql , veriler.sql , cihazlar.sql
    
