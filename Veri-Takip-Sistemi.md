@@ -24,7 +24,7 @@ Yerel ağda çalışır, kullanıcı doğrulaması yapar ve verileri güvenli ş
 
 ```bash
 git clone https://github.com/Erendnzr/Staj-2025
-cd BasincIzlemeProjesi
+cd Staj-2025
 ```
 
 2. **Veritabanı ayarlarını yap:**
