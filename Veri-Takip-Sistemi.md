@@ -136,13 +136,27 @@ Yeni veri eklemek için kullanılır.
 }
 ```
 
-#### Örnek cURL:
+#### Örnek Post İsteği:
 
-```bash
-curl -X POST "http://localhost:5048/api/veriler/veri-ekle" ^
--H "Content-Type: application/json" ^
--H "x-api-key: ApiKey123" ^
--d "{\"CihazId\":\"cihaz1\",\"Deger\":100,\"Zaman\":\"2025-07-24T10:55:00\"}"
+```import requests
+
+url = "http://localhost:5048/api/veriler/veri-ekle"
+
+headers = {
+    "Content-Type": "application/json",
+    "X-Api-Key": "ApiKey123"
+}
+
+data = {
+    "CihazId": "Cihaz1",
+    "Deger": 200,
+    "Zaman": "2025-08-29T14:00:00"
+}
+
+response = requests.post(url, headers=headers, json=data)
+
+print("Status Code:", response.status_code)
+print("Response:", response.json())
 
 ```
 

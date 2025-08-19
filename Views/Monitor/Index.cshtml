@@ -1,4 +1,4 @@
-@model List<BasincIzlemeProjesi.Models.Veri>
+	@model List<BasincIzlemeProjesi.Models.Veri>
 
 @{
     ViewData["Title"] = "Veri İzleme";
@@ -68,7 +68,7 @@
                     <td>@veri.Id</td>
                     <td>@veri.CihazId</td>
                     <td>@veri.Deger</td>
-                    <td>@veri.Zaman.ToLocalTime().ToString("yyyy-MM-ddTHH:mm")</td>
+                    <td>@veri.Zaman.ToString("yyyy-MM-dd HH:mm")</td>
                 </tr>
             }
         </tbody>

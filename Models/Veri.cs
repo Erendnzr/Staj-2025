@@ -5,19 +5,18 @@ using System.Text.Json.Serialization;
 
 namespace BasincIzlemeProjesi.Models
 {
-    [Table("veriler")]
+[Table("veriler")]
     public class Veri
     {
         public int Id { get; set; }
 
-        [JsonPropertyName("cihaz_id")]  
+        [JsonPropertyName("cihaz_id")]
         [Column("cihaz_id")]
-        
-        public string CihazId { get; set; }
+        public string CihazId { get; set; } 
 
         public int Deger { get; set; }
 
-        public DateTime Zaman { get; set; }
+        public DateTime Zaman { get; set; }  
     }
 }
 
